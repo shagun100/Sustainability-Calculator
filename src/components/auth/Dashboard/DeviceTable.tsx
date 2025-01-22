@@ -24,9 +24,6 @@ console.log('devicesdevicesdevices', devices);
                     <TableCell>Device Name</TableCell>
                     <TableCell>Device Model</TableCell>
                     <TableCell>Device Vendor</TableCell>
-                    <TableCell>Minimum Consumption</TableCell>
-                    <TableCell>Maximum Consumption</TableCell>
-                    <TableCell>CO2</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -37,8 +34,6 @@ console.log('devicesdevicesdevices', devices);
                             <TableCell>{deviceList?.name}</TableCell>
                             <TableCell>{deviceList?.model}</TableCell>
                             <TableCell>{deviceList?.vendor}</TableCell>
-                            <TableCell>{deviceList?.minPower}</TableCell>
-                            <TableCell>{deviceList?.maxPower}</TableCell>
                         </TableRow>
                     )
                 })

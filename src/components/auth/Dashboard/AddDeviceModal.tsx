@@ -98,8 +98,8 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({ closeModal, setDeviceDa
                     />
                 </label>
                 <div className="form-btn-container">
-                <button onClick={handleSubmit}>Generate Report</button>
-                <button onClick={closeModal}>Close</button>
+                    <button onClick={handleSubmit}>Generate Report</button>
+                    <button onClick={closeModal}>Close</button>
                 </div>
             </div>
         </div>
