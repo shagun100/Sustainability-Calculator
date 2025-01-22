@@ -1,0 +1,110 @@
+/* Devices.css */
+
+.device-page {
+    padding: 20px;
+  }
+  
+  .banner {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 84.2vw;
+
+    .logo{
+      height: 3vw;
+      width: 3vw;
+      margin-right: 10px;
+      border-radius: 7px;
+    }
+
+    button{
+      margin: 0;
+    }
+  }
+
+  .top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+  }
+  
+  .add-device-btn {
+    font-size: 10px;
+    cursor: pointer;
+    background-color: #02263e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .device-table {
+    margin-top: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f4f4f4;
+  }
+  
+  /* Add Device Form Styles */
+  .add-device-form {
+    position: fixed;
+    top: 0;
+    left: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+  }
+  
+  .add-device-form h2 {
+    margin-top: 0;
+  }
+  
+  .add-device-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-device-form input {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-device-form button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-device-form button:hover {
+    background-color: white;
+    color: #02263e;
+  }
+  
+  /* Slide-In Effect */
+  .device-page .add-device-form {
+    left: 0; /* Slide in from left */
+  }
