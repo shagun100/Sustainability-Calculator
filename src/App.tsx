@@ -1,9 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignIn from './components/auth/SignIn';
-import Dashboard from './components/auth/Dashboard/Dashboard';
-import DeviceList from './components/auth/devices/Devicelist';
-import SignUp from './components/auth/Signup';
+/*import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SignUp from "./components/auth/Signup";
+import Dashboard from "./components/auth/Dashboard/Dashboard";
+import DeviceList from "./components/auth/devices/Devicelist";
+import SignIn from "./components/auth/SignIn";
 
 const App: React.FC = () => {
   return (
@@ -11,8 +11,34 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/devices" element={<DeviceList />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/devices" element={<DeviceList />} />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;*/
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import SignUp from "./components/auth/Signup";
+import Dashboard from "./components/auth/Dashboard/Dashboard";
+import DeviceList from "./components/auth/devices/Devicelist";
+import SignIn from "./components/auth/SignIn";
+import EmissionContainer from "./components/auth/Emission/EmissionContainer";
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/signin" replace />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/devices" element={<DeviceList />} />
+        <Route path="/emission" element={<EmissionContainer />} />
+        <Route path="/reports" element={<div>Reports Page (Coming Soon)</div>} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );

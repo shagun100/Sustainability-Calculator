@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AddDeviceForm from './addDeviceForm';
+import AddDeviceForm from './AddDeviceForm';
 import './Devices.css';
 
 const DeviceList = () => {
