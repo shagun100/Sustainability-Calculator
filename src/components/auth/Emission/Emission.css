@@ -1,0 +1,97 @@
+.emission-screen {
+    padding: 20px;
+}
+
+.devices-container {
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.device-list {
+    display: grid;
+    gap: 10px;
+}
+
+.device-item {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    align-items: center;
+}
+
+.device-item.selected {
+    background-color: #f0f9ff;
+    border-color: #3b82f6;
+}
+
+.generate-report-btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.generate-report-btn:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.emissions-report {
+    margin-top: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.report-card {
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+.report-card h3 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.report-card .emissions {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #3b82f6;
+}
+
+.total-emissions {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #1e40af;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.total-emissions h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.total-emissions p {
+    font-size: 2rem;
+    font-weight: 700;
+}
