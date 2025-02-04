@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EmissionScreen from "./EmissionScreen";
-import { Device } from "../Dashboard/DashboardContainer"; // Assuming you have types defined here
+import { Device } from "../../Dashboard/DashboardContainer"; // Assuming you have types defined here
 
 const EmissionContainer = () => {
     // This container component will handle the state management and data flow

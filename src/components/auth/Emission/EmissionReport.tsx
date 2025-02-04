@@ -1,5 +1,5 @@
 import React from 'react';
-import { Device } from '../Dashboard/DashboardContainer';
+import { Device } from '../../Dashboard/DashboardContainer';
 
 interface EmissionReportProps {
     devices: Device[];

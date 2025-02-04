@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../Header/Header";
 import EmissionReport from "./EmissionReport";
 import OIP from '../../../assets/OIP.jpg';
-import { Device } from "../Dashboard/DashboardContainer";
+import { Device } from "../../Dashboard/DashboardContainer";
 import "./emission.css";
 import DeviceSelection from "./DeviceSelectio";
 

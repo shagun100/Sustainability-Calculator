@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Device } from '../Dashboard/DashboardContainer';
+import type { Device } from '../../Dashboard/DashboardContainer';
 
 interface DeviceSelectionProps {
     devices: Device[];

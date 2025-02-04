@@ -15,7 +15,7 @@ const SignUp = () => {
     if (email && password && password === confirmPassword) {
       // In a real-world scenario, you would send these values to a backend API
       console.log('Signed Up');
-      navigate('/devices'); // Redirect to device page on successful signup
+      navigate('/Overview'); // Redirect to device page on successful signup
     } else {
       setError('Please fill in all fields correctly');
     }
