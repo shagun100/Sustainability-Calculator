@@ -1,0 +1,17 @@
+.searchBarContainer{
+    min-width: 408px;
+    position: relative;
+    .searchIcon{
+        position: absolute;        
+        display: block;
+        height: 2vw;
+        width: 2vw;
+        top: 50%;
+        transform: translate(50%, -50%);
+    }
+
+    .searchInput{
+        width: 100%;
+    }
+
+}
