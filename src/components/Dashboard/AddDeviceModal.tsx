@@ -32,6 +32,7 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    console.log("Updating:", name, "Value:", value); // Debugging log
     setNewDevice((prevDevice) => ({
       ...prevDevice,
       [name]: value,
@@ -62,13 +63,14 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({
   return (
     <div className="add-device-modal">
       <div className="modal-content">
+      <input />
         <h3>Add New Device</h3>
         <label>
           Device Name:
           <input
             type="text"
             name="name"
-            value={newDevice.name}
+            value={newDevice.name ?? ""}
             onChange={handleInputChange}
           />
         </label>

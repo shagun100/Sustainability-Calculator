@@ -17,7 +17,7 @@ const OverviewPage = () => {
         >
           <h1>Welcome to RackTrackCO2</h1>
           <p>
-          **RackTrackCO2** is your ultimate solution for tracking and managing IT asset sustainability.  
+          RackTrackCO2 is your ultimate solution for tracking and managing IT asset sustainability.  
             Our platform helps organizations monitor **CO2 emissions**, optimize energy usage, and take  
             informed actions toward **reducing their carbon footprint**. By leveraging real-time data  
             and analytics, we empower businesses to make eco-friendly IT decisions and contribute  

@@ -4,7 +4,7 @@
     .searchIcon{
         position: absolute;        
         display: block;
-        height: 2vw;
+        height: 1vw;
         width: 2vw;
         top: 50%;
         transform: translate(50%, -50%);
@@ -12,6 +12,7 @@
 
     .searchInput{
         width: 100%;
+        padding: 8px 45px;
     }
 
 }

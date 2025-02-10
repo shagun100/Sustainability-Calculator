@@ -1,5 +1,5 @@
 .overview-container {
-    background-color: #1c1c1c;
+    background-color: #E5E4E2;
     color: white;
     padding: 85px 20px;
     text-align: center;
@@ -11,13 +11,15 @@
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 10px;
+    color: black;
   }
   
   .overview-header p {
-    font-size: 1.2rem;
+    font-size: 0.96rem;
     max-width: 600px;
     margin: auto;
     opacity: 0.9;
+    color: black;
   }
   
   .overview-links {
@@ -39,7 +41,7 @@
   }
   
   .overview-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 10px;
   }
   
