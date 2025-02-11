@@ -169,7 +169,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
 };
 
 export default CustomerList;*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface CustomerListProps {
   showCustomerModal: boolean;
@@ -184,17 +184,45 @@ interface CustomerListProps {
 }
 
 const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowCustomerModal, generateReport }) => {
-  
-  const staticCustomers = [
+interface Account {
+  accountId: number;
+  accountName: string;
+  accountNumber: string;
+}
+
+const [accountList, setAccountList] = useState<Account[]>([]); // List of accounts
+const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
+
+const [deviceTypes, setDeviceTypes] = useState([]); // Device types for selected account
+const [selectedDeviceType, setSelectedDeviceType] = useState<number | null>(null);
+
+const [deviceModels, setDeviceModels] = useState([]); // Device models for selected account
+const [selectedDeviceModel, setSelectedDeviceModel] = useState<number | null>(null);
+
+interface EmissionData {
+  totalMinEmission: number;
+  totalMaxEmission: number;
+  deviceDTOList: {
+    deviceModel: string;
+    hostname: string;
+    minPower: number;
+    maxPower: number;
+    emissionFactor: number;
+  }[];
+}
+
+const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // Store emission response
+
+  /*const staticCustomers = [
     { customerId: 2, customerName: "ABC comp", customerNumber: "001" },
     { customerId: 3, customerName: "XYZ comp", customerNumber: "002" },
     { customerId: 4, customerName: "DEF corp", customerNumber: "003" },
     { customerId: 5, customerName: "GHI Ltd", customerNumber: "004" }
-  ];
+  ];*/
 
   const hypervisorModels = ["VMware ESXi", "Microsoft Hyper-V", "Citrix XenServer"];
   const serverModels = ["HP DL range G8", "HP DL range G9", "Dell R720", "Dell R740"];
-  
+  //Update Component State neeche wala code
   const [selectedType, setSelectedType] = useState<string>(""); // Rackspace Internal / External
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // Hypervisor / Server
   const [selectedCustomers, setSelectedCustomers] = useState<number[]>([]);
@@ -206,19 +234,114 @@ const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowC
   const [showDevices, setShowDevices] = useState(false);
 
   const handleCustomerChange = (customerId: number) => {
-    setSelectedCustomers((prev) =>
-      prev.includes(customerId) ? prev.filter(id => id !== customerId) : [...prev, customerId]
-    );
+    setSelectedCustomers((prev) => {
+      const isSelected = prev.includes(customerId);
+      return isSelected ? prev.filter(id => id !== customerId) : [...prev, customerId];
+    });
   };
+  
 
   const handleDeviceChange = (device: string) => {
     setSelectedDevices((prev) =>
       prev.includes(device) ? prev.filter(d => d !== device) : [...prev, device]
     );
   };
+  //Fetch and populate accounts neeche wala code
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:8080/account");
+        const data = await response.json();
+        console.log("Fetched Accounts:", data);
+        setAccountList(data);
+      } catch (error) {
+        console.error("Error fetching accounts:", error);
+      } finally{
+        setLoading(false);
+      }
+    };
+    fetchAccounts();
+  }, []);
+  //Fetch Device Types on Account Selection neeche wala code
+  const handleAccountSelect = async (accountId: number) => {
+    setSelectedAccount(accountId);
+    setSelectedDeviceType(null); // Reset previous selections
+    setSelectedDeviceModel(null);
+  
+    try {
+      const response = await fetch(`http://localhost:8080/account/${accountId}/device-types`);
+      const data = await response.json();
+      setDeviceTypes(data);
+    } catch (error) {
+      console.error("Error fetching device types:", error);
+    }
+  };
 
+  //Fetch device models on device type selection
+  const handleDeviceTypeSelect = async (deviceTypeId: number) => {
+    setSelectedDeviceType(deviceTypeId);
+    setSelectedDeviceModel(null); // Reset model selection
+  
+    try {
+      const response = await fetch(`http://localhost:8080/account/${selectedAccount}/device-types/${deviceTypeId}/device-models`);
+      const data = await response.json();
+      setDeviceModels(data);
+    } catch (error) {
+      console.error("Error fetching device models:", error);
+    }
+  };
+  
+  //Submit emission calculation 
+  const handleSubmit = async () => {
+    if (!selectedAccount || !selectedDeviceType || !selectedDeviceModel) {
+      alert("Please select all fields before submitting!");
+      return;
+    }
+  
+    const requestBody = {
+      accountId: selectedAccount,
+      deviceTypeId: selectedDeviceType,
+      deviceModelId: selectedDeviceModel,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:8080/emission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+  
+      const data = await response.json();
+      setEmissionData(data); // Store emission result
+    } catch (error) {
+      console.error("Error fetching emissions:", error);
+    }
+  };
+  //Display kro
+  {emissionData && (
+    <div className="emission-results">
+      <h3>Emission Data</h3>
+      <p>Min Emission: {emissionData.totalMinEmission}</p>
+      <p>Max Emission: {emissionData.totalMaxEmission}</p>
+      
+      <h4>Device Details</h4>
+      {emissionData.deviceDTOList.map((device, index) => (
+        <div key={index}>
+          <p>Device: {device.deviceModel}</p>
+          <p>Hostname: {device.hostname}</p>
+          <p>Min Power: {device.minPower}W</p>
+          <p>Max Power: {device.maxPower}W</p>
+          <p>Emission Factor: {device.emissionFactor}</p>
+        </div>
+      ))}
+    </div>
+  )}
+  
+  
+  
   if (!showCustomerModal) return null;
-
   return (
     <div className="customer-modal">
       <div className="customer-modal-content">
@@ -241,21 +364,23 @@ const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowC
           </button>
           {showCustomers && (
             <div className="dropdown-content">
-              {staticCustomers.map((customer) => (
-                <label key={customer.customerId} className="checkbox-label">
+       
+              {accountList.map((account) => (
+                <label key={account.accountId} className="checkbox-label">
                   <input
                     type="checkbox"
-                    checked={selectedCustomers.includes(customer.customerId)}
-                    onChange={() => handleCustomerChange(customer.customerId)}
+                    checked={selectedCustomers.includes(account.accountId)}
+                    onChange={() => handleCustomerChange(account.accountId)}
                   />
-                  <p>{`${customer.customerName} (${customer.customerNumber})`}</p>
+                  <p>{`${account.accountName} (${account.accountNumber})`}</p>
                 </label>
               ))}
             </div>
           )}
         </div>
-
+        {/*
         {/* Hypervisor or Server Selection */}
+        {/* 
         <div className="modal-section">
           <label>Select Device Category:</label>
           <select className="dropdown-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -263,9 +388,10 @@ const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowC
             <option value="hypervisor">Hypervisor</option>
             <option value="server">Server</option>
           </select>
-        </div>
+        </div>*/}
 
         {/* Device Type Section */}
+        {/*
         <div className="modal-section">
           <button className="toggle-btn" onClick={() => setShowDevices(!showDevices)}>
             Select Device Model(s) {showDevices ? "▲" : "▼"}
@@ -284,7 +410,7 @@ const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowC
               ))}
             </div>
           )}
-        </div>
+        </div>*/}
 
         {/* Time Range Selection */}
         <div className="modal-section date-range-container">

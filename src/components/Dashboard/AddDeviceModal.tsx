@@ -8,6 +8,15 @@ interface Device {
   customerName: string;
   customerNumber: string;
   customerType: "Internal" | "External";
+  accountNumber?: string;
+  accountType?: string;
+  accountName?: string;
+  deviceNumber?: number;
+  deviceType?: string;
+  deviceModel?: string;
+  status?: string;
+  dataCenter?: string;
+  hostname?: string;
 }
 
 interface AddDeviceModalProps {
@@ -47,8 +56,28 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({
 
     try {
       // Make a POST request to your API to add the new device
-      const response = await axios.post("/device", newDevice);
+      /*{
+        "accountNumber": "1836495",
+        "accountType": "internal",
+        "accountName": "TES-Corp Svcs & GSCS",
+        "deviceNumber": 513030,
+        "deviceType": "hypervisor",
+        "deviceModel": "DELL PowerEdge R720 Hypervisor",
+        "status": "running",
+        "dataCenter": "ord",
+        "hostname": "513030-hyp16.ord1.rvi.local"
+    }*/
+      newDevice.accountNumber = "1836495";
+      newDevice.accountType = "internal";
+      newDevice.accountName = "TES-Corp Svcs & GSCS";
+      newDevice.deviceNumber = 513040;
+      newDevice.deviceType = "hypervisor";
+      newDevice.deviceModel = "DELL PowerEdge R720 Hypervisor";
+      newDevice.status = "running";
+      newDevice.dataCenter = "ord";
+      newDevice.hostname = "513040-hyp16.ord1.rvi.local";
 
+      const response = await axios.post("/device", newDevice);
       if (response.status === 201) {
         // On success, update the parent state with the new device
         setDeviceData([...deviceData, newDevice]);
@@ -63,7 +92,7 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({
   return (
     <div className="add-device-modal">
       <div className="modal-content">
-      <input />
+      
         <h3>Add New Device</h3>
         <label>
           Device Name:

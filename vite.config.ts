@@ -8,6 +8,7 @@ export default defineConfig({
     port: 3000, // Change the default port (from 5173 to 3000)
     proxy: {
       '/device': 'http://localhost:8080', // Proxy API requests to a backend server
+      '/account': 'http://localhost:8080',
     }
   }
 })
