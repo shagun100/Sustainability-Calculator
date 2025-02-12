@@ -9,6 +9,7 @@ export default defineConfig({
     proxy: {
       '/device': 'http://localhost:8080', // Proxy API requests to a backend server
       '/account': 'http://localhost:8080',
+      '/emission': 'http://localhost:8080',
     }
   }
 })

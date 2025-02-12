@@ -170,6 +170,7 @@ const CustomerList: React.FC<CustomerListProps> = ({
 
 export default CustomerList;*/
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 interface CustomerListProps {
   showCustomerModal: boolean;
@@ -193,13 +194,23 @@ interface Account {
 const [accountList, setAccountList] = useState<Account[]>([]); // List of accounts
 const [selectedAccount, setSelectedAccount] = useState<number | null>(null);
 
-const [deviceTypes, setDeviceTypes] = useState([]); // Device types for selected account
+interface DeviceType {
+  id: number;
+  name: string;
+}
+
+const [deviceTypes, setDeviceTypes] = useState<DeviceType[]>([]); // Device types for selected account
 const [selectedDeviceType, setSelectedDeviceType] = useState<number | null>(null);
 
-const [deviceModels, setDeviceModels] = useState([]); // Device models for selected account
+interface DeviceModel {
+  id: number;
+  name: string;
+}
+
+const [deviceModels, setDeviceModels] = useState<DeviceModel[]>([]); // Device models for selected account
 const [selectedDeviceModel, setSelectedDeviceModel] = useState<number | null>(null);
 
-interface EmissionData {
+interface Data {
   totalMinEmission: number;
   totalMaxEmission: number;
   deviceDTOList: {
@@ -211,7 +222,7 @@ interface EmissionData {
   }[];
 }
 
-const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // Store emission response
+const [Data, setData] = useState<Data | null>(null); // Store emission response
 
   /*const staticCustomers = [
     { customerId: 2, customerName: "ABC comp", customerNumber: "001" },
@@ -228,7 +239,6 @@ const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // 
   const [selectedCustomers, setSelectedCustomers] = useState<number[]>([]);
   const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
   const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: "", to: "" });
-
   const [showCustomers, setShowCustomers] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showDevices, setShowDevices] = useState(false);
@@ -254,44 +264,69 @@ const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // 
       try {
         const response = await fetch("http://localhost:8080/account");
         const data = await response.json();
-        console.log("Fetched Accounts:", data);
-        setAccountList(data);
+        
+        console.log("Fetched Accounts:", data); // Debugging step
+  
+        if (data.accountList) {
+          setAccountList(data.accountList);  // Fix: Extract `accountList` from the response
+        } else {
+          setAccountList(data); // If it's already an array, set it directly
+        }
+  
       } catch (error) {
         console.error("Error fetching accounts:", error);
-      } finally{
+      } finally {
         setLoading(false);
       }
     };
     fetchAccounts();
   }, []);
+
+  //for fetching categories dynamically
+  
   //Fetch Device Types on Account Selection neeche wala code
   const handleAccountSelect = async (accountId: number) => {
     setSelectedAccount(accountId);
-    setSelectedDeviceType(null); // Reset previous selections
+    setSelectedDeviceType(null);
     setSelectedDeviceModel(null);
   
     try {
-      const response = await fetch(`http://localhost:8080/account/${accountId}/device-types`);
-      const data = await response.json();
-      setDeviceTypes(data);
+      // Fetch Device Types
+      const typeResponse = await fetch(`http://localhost:8080/account/${accountId}/device-types`);
+      const typeData = await typeResponse.json();
+      setDeviceTypes(typeData || []);
+  
+      // Fetch Device Models
+      const modelResponse = await fetch(`http://localhost:8080/account/${accountId}/device-models`);
+      const modelData = await modelResponse.json();
+      setDeviceModels(modelData || []);
+  
     } catch (error) {
-      console.error("Error fetching device types:", error);
+      console.error("Error fetching device data:", error);
     }
   };
+  
+  
 
   //Fetch device models on device type selection
   const handleDeviceTypeSelect = async (deviceTypeId: number) => {
     setSelectedDeviceType(deviceTypeId);
     setSelectedDeviceModel(null); // Reset model selection
   
+    if (!selectedAccount) return; // Fix: Prevent request if no account is selected
+  
     try {
-      const response = await fetch(`http://localhost:8080/account/${selectedAccount}/device-types/${deviceTypeId}/device-models`);
+      const response = await fetch(`http://localhost:8080/account/${selectedAccount}/device-models`);
       const data = await response.json();
-      setDeviceModels(data);
+  
+      console.log("Fetched Device Models:", data); // Debugging step
+  
+      setDeviceModels(data.deviceModels || data); // Fix: Handle response format
     } catch (error) {
       console.error("Error fetching device models:", error);
     }
   };
+  
   
   //Submit emission calculation 
   const handleSubmit = async () => {
@@ -307,39 +342,64 @@ const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // 
     };
   
     try {
-      const response = await fetch("http://localhost:8080/emission", {
+      console.log("Request Body:", requestBody); 
+      /*const response = await fetch("http://localhost:8080/emission", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
         body: JSON.stringify(requestBody),
-      });
+      });*/
+      const response = await axios.post("/emission", requestBody);
+      console.log(response);
+      //const data = await response.json();
+      
+      //console.log("Emission Data:", data); // Debugging step
   
-      const data = await response.json();
-      setEmissionData(data); // Store emission result
+      setData(response.data || null); // Fix: Handle empty response safely
     } catch (error) {
       console.error("Error fetching emissions:", error);
     }
   };
+  
   //Display kro
-  {emissionData && (
+  console.log("Data:", Data);
+  console.log("length:", Data?.deviceDTOList?.length);
+  const data = JSON.stringify(Data, null);
+  console.log(typeof data);
+  {/*{data ? (
+    <>
+      <p>Min Emission: {data.totalMinEmission ?? 'N/A'}</p>
+      <p>Max Emission: {data.totalMaxEmission ?? 'N/A'}</p>
+    </>
+  ) : (
+    <p>No emission data available</p>
+  )}*/}
+  
+  {/*{Data && Array.isArray(Data.deviceDTOList) && Data.deviceDTOList.length > 0 ? (
     <div className="emission-results">
       <h3>Emission Data</h3>
-      <p>Min Emission: {emissionData.totalMinEmission}</p>
-      <p>Max Emission: {emissionData.totalMaxEmission}</p>
+      <p>Min Emission: {Data.totalMinEmission ?? 'N/A'}</p>
+      <p>Max Emission: {Data.totalMaxEmission ?? 'N/A'}</p>
       
       <h4>Device Details</h4>
-      {emissionData.deviceDTOList.map((device, index) => (
+      {Data.deviceDTOList.map((device, index) => (
         <div key={index}>
-          <p>Device: {device.deviceModel}</p>
-          <p>Hostname: {device.hostname}</p>
-          <p>Min Power: {device.minPower}W</p>
-          <p>Max Power: {device.maxPower}W</p>
-          <p>Emission Factor: {device.emissionFactor}</p>
+          <p>Device: {device?.deviceModel ?? 'Unknown'}</p>
+          <p>Hostname: {device?.hostname ?? 'N/A'}</p>
+          <p>Min Power: {device?.minPower ? `${device.minPower}W` : 'N/A'}</p>
+          <p>Max Power: {device?.maxPower ? `${device.maxPower}W` : 'N/A'}</p>
+          <p>Emission Factor: {device?.emissionFactor ?? 'N/A'}</p>
         </div>
       ))}
     </div>
-  )}
+  ) : (
+    <p>No emission data available</p>
+  )}*/}
   
   
+  
+
+  console.log('accountListaccountListaccountList', accountList);
   
   if (!showCustomerModal) return null;
   return (
@@ -358,60 +418,48 @@ const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // 
         </div>
 
         {/* Customers Section */}
-        <div className="modal-section">
-          <button className="toggle-btn" onClick={() => setShowCustomers(!showCustomers)}>
-            Select Account(s) {showCustomers ? "▲" : "▼"}
-          </button>
-          {showCustomers && (
-            <div className="dropdown-content">
-       
-              {accountList.map((account) => (
-                <label key={account.accountId} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedCustomers.includes(account.accountId)}
-                    onChange={() => handleCustomerChange(account.accountId)}
-                  />
-                  <p>{`${account.accountName} (${account.accountNumber})`}</p>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-        {/*
+        {/* Customers Section */}
+<div className="modal-section">
+  <label>Select Account:</label>
+  <select value={selectedAccount ?? ""} onChange={(e) => handleAccountSelect(Number(e.target.value))}> 
+    <option value="">-- Select Account --</option>
+    {accountList.map((account) => (
+      <option key={account.accountId} value={account.accountId}>
+        {account.accountName} ({account.accountNumber})
+      </option>
+    ))}
+  </select>
+</div>
+
+        
         {/* Hypervisor or Server Selection */}
-        {/* 
+        
         <div className="modal-section">
-          <label>Select Device Category:</label>
-          <select className="dropdown-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            <option value="">-- Select --</option>
-            <option value="hypervisor">Hypervisor</option>
-            <option value="server">Server</option>
+          <label>Select Device Type:</label>
+          <select value={selectedDeviceType ?? ""} onChange={(e) => handleDeviceTypeSelect(Number(e.target.value))}>
+            <option value="">-- Select Device Type --</option>
+            {deviceTypes.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
           </select>
-        </div>*/}
+        </div>
 
-        {/* Device Type Section */}
-        {/*
+        {/* Device model Section */}
+    
         <div className="modal-section">
-          <button className="toggle-btn" onClick={() => setShowDevices(!showDevices)}>
-            Select Device Model(s) {showDevices ? "▲" : "▼"}
-          </button>
-          {showDevices && (
-            <div className="dropdown-content">
-              {(selectedCategory === "hypervisor" ? hypervisorModels : serverModels).map((device, index) => (
-                <label key={index} className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={selectedDevices.includes(device)}
-                    onChange={() => handleDeviceChange(device)}
-                  />
-                  {device}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>*/}
-
+          <label>Select Device Model:</label>
+          <select value={selectedDeviceModel ?? ""} onChange={(e) => setSelectedDeviceModel(Number(e.target.value))}>
+            <option value="">-- Select Device Model --</option>
+            {deviceModels.map((model) => (
+              <option key={model.id} value={model.id}>
+                {model.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        
         {/* Time Range Selection */}
         <div className="modal-section date-range-container">
           <label className="date-range-label">From:</label>
@@ -434,9 +482,7 @@ const [emissionData, setEmissionData] = useState<EmissionData | null>(null); // 
         {/* Footer */}
         <div className="modal-footer">
           <button className="modal-btn close-btn" onClick={() => setShowCustomerModal(false)}>Close</button>
-          <button className="modal-btn generate-btn" onClick={() => generateReport(selectedType, selectedCustomers, selectedCategory, selectedDevices, timeRange)}>
-            Submit
-          </button>
+          <button className="modal-btn generate-btn" onClick={handleSubmit}>Submit</button>
         </div>
       </div>
     </div>
