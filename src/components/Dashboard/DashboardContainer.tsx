@@ -22,28 +22,60 @@ const DashboardContainer = () => {
     const [showBulkModal, setShowBulkModal] = useState(false);
     const [showCustomerModal, setShowCustomerModal] = useState(false);
     const [showDeviceTable, setShowDeviceTable] = useState(false); 
+    const [emissionData, setEmissionData] = useState<{ data?: { deviceDTOList?: any[] } }>({});
     const handleAddDeviceClick = () => {
         setShowModal(true);
     };
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const csvData = event.target?.result as string;
-                    const devices = parseCSVToDevices(csvData);
-                    setDeviceData(prev => [...prev, ...devices]);
-                    setShowBulkModal(false);
-                } catch (error) {
-                    console.error('Error parsing CSV:', error);
-                    alert('Error parsing CSV file. Please check the file format.');
-                }
-            };
-            reader.readAsText(file);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+const [isUploading, setIsUploading] = useState(false);
+
+const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        setSelectedFile(file);
+    }
+};
+
+const handleSubmitFile = async () => {
+    if (!selectedFile) {
+        alert("Please select a file first.");
+        return;
+    }
+
+    if (!selectedAccountNumber) {  // Ensure AccountNumber is selected
+        alert("Please select an Account Number.");
+        return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("accountNumber", selectedAccountNumber); // Include AccountNumber
+
+    try {
+        const response = await fetch("YOUR_BACKEND_UPLOAD_API", {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to upload file");
         }
-    };
+
+        const result = await response.json();
+        console.log("Emission Data:", result);
+        setEmissionData(result); // Store emission data to show in the table
+        setShowBulkModal(false); // Close modal after success
+    } catch (error) {
+        console.error("Error uploading file:", error);
+        alert("File upload failed. Please try again.");
+    } finally {
+        setIsUploading(false);
+    }
+};
+
+    
 
     const parseCSVToDevices = (csvData: string): Device[] => {
         const lines = csvData.split('\n');
@@ -97,7 +129,7 @@ const DashboardContainer = () => {
         // });
         // console.log('Emissions Report:', report);
     };
-
+    
     return (
         <div className="dashboard-content">
             <Header />
@@ -110,20 +142,22 @@ const DashboardContainer = () => {
                     + Add Bulk Devices
                 </button>
                 {showBulkModal && (
-                    <div className="add-bulk-modal">
-                        <div className="bulk-modal-content">
-                            <h3>Upload Bulk Devices</h3>
-                            <input
-                                type="file"
-                                accept=".csv"
-                                onChange={handleFileUpload}
-                            />
-                            <div className="form-btn-container">
-                                <button onClick={() => setShowBulkModal(false)}>Close</button>
-                            </div>
-                        </div>
-                    </div>
-                )}   
+        <div className="add-bulk-modal">
+            <div className="bulk-modal-content">
+                <h3>Upload Bulk Devices</h3>
+                <input type="file" accept=".csv" onChange={handleFileUpload} />
+            {selectedFile && <p>Selected File: {selectedFile.name}</p>}
+
+            <div className="form-btn-container">
+                <button onClick={() => setShowBulkModal(false)}>Close</button>
+                <button onClick={handleSubmitFile} disabled={isUploading}>
+                    {isUploading ? "Uploading..." : "Submit"}
+                </button>
+            </div>
+        </div>
+    </div>
+)}
+   
                 <button className="add-device-btn" onClick={() => setShowCustomerModal(true)}>
                     Get Customer Ids
                 </button>
@@ -147,7 +181,45 @@ const DashboardContainer = () => {
                     setShowCustomerModal={setShowCustomerModal}
                     generateReport={generateReport}
                     deviceData={deviceData}
+                    setEmissionData={setEmissionData}
                 />
+            }
+            {
+                Object.keys(emissionData).length ?   
+                <div className="device-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Account Name</th>
+                      <th>Min Power</th>
+                      <th>Max Power</th>
+                      <th>Device Number</th>
+                      <th>Device Type</th>
+                      <th>Device Model</th>
+                      <th>Emission Factor</th>
+                      <th>Total Minimum Emission</th>
+                      <th>Total Maximum Emission</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {
+                    emissionData?.data?.deviceDTOList?.map((device, index) => {
+                        return (
+                        <tr key={index}>
+                            <td>{device.accountName}</td>
+                            <td>{device.minPower}</td>
+                            <td>{device.maxPower}</td>
+                            <td>{device.deviceNumber}</td>
+                            <td>{device.deviceType}</td>
+                            <td>{device.deviceModel}</td>
+                            <td>{device.emissionFactor}</td>
+                            <td>{device.totalMinEmission}</td>
+                            <td>{device.totalMaxEmission}</td>
+                        </tr>)})
+                    }
+                  </tbody>
+                </table>
+              </div> : null
             }
         </div>
     );

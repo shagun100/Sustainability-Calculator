@@ -184,7 +184,7 @@ interface CustomerListProps {
   ) => void;
 }
 
-const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowCustomerModal, generateReport }) => {
+const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowCustomerModal, generateReport, setEmissionData }) => {
 interface Account {
   accountId: number;
   accountName: string;
@@ -350,7 +350,15 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
         body: JSON.stringify(requestBody),
       });*/
       const response = await axios.post("/emission", requestBody);
-      console.log(response);
+      if(response.status === 200) {
+        alert("Successfully calculated emissions!");
+        setShowCustomerModal(false);
+        setEmissionData(response);
+      }
+      else{
+        alert("Something went wrong!");
+
+      }
       //const data = await response.json();
       
       //console.log("Emission Data:", data); // Debugging step
@@ -362,39 +370,30 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
   };
   
   //Display kro
-  console.log("Data:", Data);
+  /*console.log("Data:", Data);
   console.log("length:", Data?.deviceDTOList?.length);
   const data = JSON.stringify(Data, null);
-  console.log(typeof data);
-  {/*{data ? (
-    <>
-      <p>Min Emission: {data.totalMinEmission ?? 'N/A'}</p>
-      <p>Max Emission: {data.totalMaxEmission ?? 'N/A'}</p>
-    </>
-  ) : (
-    <p>No emission data available</p>
-  )}*/}
-  
-  {/*{Data && Array.isArray(Data.deviceDTOList) && Data.deviceDTOList.length > 0 ? (
-    <div className="emission-results">
-      <h3>Emission Data</h3>
-      <p>Min Emission: {Data.totalMinEmission ?? 'N/A'}</p>
-      <p>Max Emission: {Data.totalMaxEmission ?? 'N/A'}</p>
-      
-      <h4>Device Details</h4>
-      {Data.deviceDTOList.map((device, index) => (
-        <div key={index}>
-          <p>Device: {device?.deviceModel ?? 'Unknown'}</p>
-          <p>Hostname: {device?.hostname ?? 'N/A'}</p>
-          <p>Min Power: {device?.minPower ? `${device.minPower}W` : 'N/A'}</p>
-          <p>Max Power: {device?.maxPower ? `${device.maxPower}W` : 'N/A'}</p>
-          <p>Emission Factor: {device?.emissionFactor ?? 'N/A'}</p>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p>No emission data available</p>
-  )}*/}
+  console.log(typeof data);*/
+
+  {Data && Data.deviceDTOList?.length > 0 && (
+  <div className="emission-results">
+    <h3>Emission Data</h3>
+    <p>Min Emission: {Data.totalMinEmission ?? 'N/A'}</p>
+    <p>Max Emission: {Data.totalMaxEmission ?? 'N/A'}</p>
+    
+    <h4>Device Details</h4>
+    {Data.deviceDTOList.map((device, index) => (
+      <div key={index}>
+        <p>Device: {device.deviceModel ?? 'Unknown'}</p>
+        <p>Hostname: {device.hostname ?? 'N/A'}</p>
+        <p>Min Power: {device.minPower ? `${device.minPower}W` : 'N/A'}</p>
+        <p>Max Power: {device.maxPower ? `${device.maxPower}W` : 'N/A'}</p>
+        <p>Emission Factor: {device.emissionFactor ?? 'N/A'}</p>
+      </div>
+    ))}
+  </div>
+)}
+
   
   
   
@@ -417,8 +416,18 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
           </select>
         </div>
 
-        {/* Customers Section */}
-        {/* Customers Section */}
+        {/* Account selection */}
+        {/* <div className="modal-section">
+  <label>Select Account:</label>
+  <select value={selectedAccount ?? ""} onChange={(e) => handleAccountSelect(Number(e.target.value))}> 
+    <option value="">-- Select Account --</option>
+    {accountList.map((account) => (
+      <option key={account.accountId} value={account.accountId}>
+        {account.accountName} ({account.accountNumber})
+      </option>
+    ))}
+  </select>
+</div> */}
 <div className="modal-section">
   <label>Select Account:</label>
   <select value={selectedAccount ?? ""} onChange={(e) => handleAccountSelect(Number(e.target.value))}> 
@@ -430,6 +439,7 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
     ))}
   </select>
 </div>
+
 
         
         {/* Hypervisor or Server Selection */}
