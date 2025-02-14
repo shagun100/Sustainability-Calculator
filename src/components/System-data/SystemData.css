@@ -1,0 +1,16 @@
+.system-data-container {
+    padding: 20px;
+  }
+  
+  .dropdown-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+  }
+  
+  select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  

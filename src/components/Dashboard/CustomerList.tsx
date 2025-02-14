@@ -416,18 +416,8 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
           </select>
         </div>
 
-        {/* Account selection */}
-        {/* <div className="modal-section">
-  <label>Select Account:</label>
-  <select value={selectedAccount ?? ""} onChange={(e) => handleAccountSelect(Number(e.target.value))}> 
-    <option value="">-- Select Account --</option>
-    {accountList.map((account) => (
-      <option key={account.accountId} value={account.accountId}>
-        {account.accountName} ({account.accountNumber})
-      </option>
-    ))}
-  </select>
-</div> */}
+        {/* Customers Section */}
+        {/* Customers Section */}
 <div className="modal-section">
   <label>Select Account:</label>
   <select value={selectedAccount ?? ""} onChange={(e) => handleAccountSelect(Number(e.target.value))}> 
@@ -439,7 +429,6 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
     ))}
   </select>
 </div>
-
 
         
         {/* Hypervisor or Server Selection */}
