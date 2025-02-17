@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Overview.css";
-import { motion } from "framer-motion"; // For animations
+import { FiUpload, FiBarChart, FiCloud } from "react-icons/fi";
+import { motion } from "framer-motion";
 import Navbar from "../Navbar/Navbar";
+import "./Overview.css";
 
 const OverviewPage = () => {
   return (
@@ -15,45 +16,33 @@ const OverviewPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1>Welcome to RackTrackCO2</h1>
-          <p>
-          RackTrackCO2 is your ultimate solution for tracking and managing IT asset sustainability.  
-            Our platform helps organizations monitor **CO2 emissions**, optimize energy usage, and take  
-            informed actions toward **reducing their carbon footprint**. By leveraging real-time data  
-            and analytics, we empower businesses to make eco-friendly IT decisions and contribute  
-            to a greener future.
-          </p>
+          <h1>RackTrackCO2</h1>
+          <p>**RackTrack CO₂ Overview**  
+
+RackTrack helps Rackspace assess IT asset sustainability by calculating carbon emissions for its devices. By analyzing power consumption and emission factors, RackTrack provides data-driven insights that enable Rackspace to take informed steps toward **reducing its carbon footprint.
+While RackTrack does not provide real-time tracking, it delivers detailed carbon impact calculations based on device specifications and usage data. This allows Rackspace to optimize energy efficiency, align with sustainability initiatives, and contribute to a greener future.</p>
         </motion.div>
 
         <div className="overview-links">
-          <motion.div
-            className="overview-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div className="overview-card" whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+            <div className="icon-container"><FiUpload /></div>
             <h3>Upload Device</h3>
-            <p>Add IT assets to track their sustainability impact.</p>
-            <Link to="/upload-device">Go to Upload</Link>
+            <p>Want to dive deeper? Our device-level tracking lets you monitor power consumption for each registered device. </p>
+            <Link to="/upload-device">Upload Now</Link>
           </motion.div>
 
-          <motion.div
-            className="overview-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div className="overview-card" whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+            <div className="icon-container"><FiBarChart /></div>
             <h3>See Reports</h3>
-            <p>View detailed CO2 emissions reports for your assets.</p>
+            <p>View in-depth CO2 emissions reports.</p>
             <Link to="/see-report">View Reports</Link>
           </motion.div>
 
-          <motion.div
-            className="overview-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div className="overview-card" whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+            <div className="icon-container"><FiCloud /></div>
             <h3>Generate CO2 Report</h3>
-            <p>Calculate carbon footprint for IT assets.</p>
-            <Link to="/generate-co2">Generate Report</Link>
+            <p>Calculate the carbon footprint of IT assets.</p>
+            <Link to="/generate-co2">Generate Now</Link>
           </motion.div>
         </div>
       </div>

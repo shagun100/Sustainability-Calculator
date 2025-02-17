@@ -78,6 +78,9 @@ const DashboardContainer = () => {
       const result = response.data;
       setEmissionData(result);
       setShowBulkModal(false);
+
+      setShowDeviceTable(true); 
+
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("File upload failed. Please try again.");
@@ -85,6 +88,9 @@ const DashboardContainer = () => {
       setIsUploading(false);
     }
   };
+  
+  
+  
 
   const generateReport = (data: Device[]) => {
     setShowCustomerModal(false);
