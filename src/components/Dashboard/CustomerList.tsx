@@ -1,174 +1,4 @@
-/*import React, { useState } from "react";
-import axios from "axios"; // Import axios
-
-
-interface CustomerListProps {
-  showCustomerModal: false;
-  setShowCustomerModal: () => void;
-  generateReport: () => void;
-  deviceData: [];
-}
-
-const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowCustomerModal, generateReport, deviceData}) => {
-
-    const staticCustomers = [
-        {
-            "customerId": 2,
-            "customerName": "ABC comp",
-            "customerType": "customer",
-            "customerNumber": "001"
-        },
-        {
-            "customerId": 3,
-            "customerName": "XYZ comp",
-            "customerType": "customer",
-            "customerNumber": "002"
-        },
-        {
-            "customerId": 4,
-            "customerName": "XYZ comp",
-            "customerType": "customer",
-            "customerNumber": "002"
-        },
-        {
-            "customerId": 5,
-            "customerName": "XYZ comp",
-            "customerType": "customer",
-            "customerNumber": "002"
-        }
-    ];
-
-    if (!showCustomerModal) {
-        return null;
-    }
-   
-    return (
-        <div className="customer-modal">
-            <div className="customer-modal-content">
-                <h2 className="modal-title">Select Customer</h2>
-                <div className="customer-list">
-                    {staticCustomers.map((customer, index) => (
-                        <div key={index} className="customer-item">
-                            {customer.customerNumber}
-                        </div>
-                    ))}
-                </div>
-                <div className="modal-footer">
-                    <button className="modal-btn close-btn" onClick={() => setShowCustomerModal(false)}>
-                        Close
-                    </button>
-                    <button className="modal-btn generate-btn" onClick={() => generateReport(deviceData)}>
-                        Generate CO2
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default CustomerList;*/
-/*import React, { useState } from "react";
-import axios from "axios";
-
-interface CustomerListProps {
-  showCustomerModal: false;
-  setShowCustomerModal: () => void;
-  generateReport: (selectedCustomers: any[]) => void; // Updated to pass selected customers
-  deviceData: [];
-}
-
-const CustomerList: React.FC<CustomerListProps> = ({
-  showCustomerModal,
-  setShowCustomerModal,
-  generateReport,
-  deviceData,
-}) => {
-  const staticCustomers = [
-    {
-      customerId: 2,
-      customerName: "ABC comp",
-      customerType: "customer",
-      customerNumber: "001",
-    },
-    {
-      customerId: 3,
-      customerName: "XYZ comp",
-      customerType: "customer",
-      customerNumber: "002",
-    },
-    {
-      customerId: 4,
-      customerName: "XYZ comp",
-      customerType: "customer",
-      customerNumber: "003",
-    },
-    {
-      customerId: 5,
-      customerName: "XYZ comp",
-      customerType: "customer",
-      customerNumber: "004",
-    },
-  ];
-
-  // State for storing selected customers
-  const [selectedCustomers, setSelectedCustomers] = useState<any[]>([]);
-
-  const handleCheckboxChange = (customerId: number) => {
-    setSelectedCustomers((prevSelectedCustomers) => {
-      if (prevSelectedCustomers.includes(customerId)) {
-        // Deselect customer
-        return prevSelectedCustomers.filter((id) => id !== customerId);
-      } else {
-        // Select customer
-        return [...prevSelectedCustomers, customerId];
-      }
-    });
-  };
-
-  if (!showCustomerModal) {
-    return null;
-  }
-
-  return (
-    <div className="customer-modal">
-      <div className="customer-modal-content">
-        <h2 className="modal-title">Select Customer(s)</h2>
-        <div className="customer-list">
-          {staticCustomers.map((customer, index) => (
-            <div key={index} className="customer-item">
-              <input
-                type="checkbox"
-                id={`customer-${customer.customerId}`}
-                value={customer.customerId}
-                checked={selectedCustomers.includes(customer.customerId)}
-                onChange={() => handleCheckboxChange(customer.customerId)}
-              />
-              <label htmlFor={`customer-${customer.customerId}`}>
-                {customer.customerName} ({customer.customerNumber})
-              </label>
-            </div>
-          ))}
-        </div>
-        <div className="modal-footer">
-          <button
-            className="modal-btn close-btn"
-            onClick={() => setShowCustomerModal(false)}
-          >
-            Close
-          </button>
-          <button
-            className="modal-btn generate-btn"
-            onClick={() => generateReport(selectedCustomers)} // Pass selected customers
-          >
-            Generate CO2
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default CustomerList;*/
+//old code 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -182,6 +12,7 @@ interface CustomerListProps {
     selectedDevices: string[],
     timeRange: { from: string; to: string }
   ) => void;
+  setEmissionData: (data: any) => void;
 }
 
 const CustomerList: React.FC<CustomerListProps> = ({ showCustomerModal, setShowCustomerModal, generateReport, setEmissionData }) => {
@@ -230,6 +61,16 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
     { customerId: 4, customerName: "DEF corp", customerNumber: "003" },
     { customerId: 5, customerName: "GHI Ltd", customerNumber: "004" }
   ];*/
+  const getDefaultTimeRange = () => {
+    const now = new Date();
+    const past24Hours = new Date(now);
+    past24Hours.setDate(now.getDate() - 1);
+    
+    return {
+      from: past24Hours.toISOString().split("T")[0], // Format as YYYY-MM-DD
+      to: now.toISOString().split("T")[0]
+    };
+  };
 
   const hypervisorModels = ["VMware ESXi", "Microsoft Hyper-V", "Citrix XenServer"];
   const serverModels = ["HP DL range G8", "HP DL range G9", "Dell R720", "Dell R740"];
@@ -238,10 +79,12 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // Hypervisor / Server
   const [selectedCustomers, setSelectedCustomers] = useState<number[]>([]);
   const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
-  const [timeRange, setTimeRange] = useState<{ from: string; to: string }>({ from: "", to: "" });
+  const [timeRange, setTimeRange] = useState<{ from: string; to: string }>(getDefaultTimeRange());
   const [showCustomers, setShowCustomers] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [showDevices, setShowDevices] = useState(false);
+
+  
 
   const handleCustomerChange = (customerId: number) => {
     setSelectedCustomers((prev) => {
@@ -265,12 +108,12 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
         const response = await fetch("http://localhost:8080/account");
         const data = await response.json();
         
-        console.log("Fetched Accounts:", data); // Debugging step
+        console.log("Fetched Accounts:", data); 
   
         if (data.accountList) {
-          setAccountList(data.accountList);  // Fix: Extract `accountList` from the response
+          setAccountList(data.accountList);  
         } else {
-          setAccountList(data); // If it's already an array, set it directly
+          setAccountList(data); 
         }
   
       } catch (error) {
@@ -339,6 +182,8 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
       accountId: selectedAccount,
       deviceTypeId: selectedDeviceType,
       deviceModelId: selectedDeviceModel,
+      from: timeRange.from,
+      to: timeRange.to,
     };
   
     try {
@@ -408,7 +253,7 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
 
         {/* Rackspace Type Selection */}
         <div className="modal-section">
-          <label>Select Rackspace Type:</label>
+          <label>Select Owner type:</label>
           <select className="dropdown-select" value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
             <option value="">-- Select --</option>
             <option value="internal">Rackspace Internal</option>
@@ -462,20 +307,10 @@ const [Data, setData] = useState<Data | null>(null); // Store emission response
         {/* Time Range Selection */}
         <div className="modal-section date-range-container">
           <label className="date-range-label">From:</label>
-          <input 
-            type="date" 
-            className="date-input"
-            value={timeRange.from} 
-            onChange={(e) => setTimeRange({ ...timeRange, from: e.target.value })} 
-          />
+          <input type="date" className="date-input" value={timeRange.from} onChange={(e) => setTimeRange({ ...timeRange, from: e.target.value })} />
 
           <label className="date-range-label">To:</label>
-          <input 
-            type="date" 
-            className="date-input"
-            value={timeRange.to} 
-            onChange={(e) => setTimeRange({ ...timeRange, to: e.target.value })} 
-          />
+          <input type="date" className="date-input" value={timeRange.to} onChange={(e) => setTimeRange({ ...timeRange, to: e.target.value })} />
         </div>
 
         {/* Footer */}

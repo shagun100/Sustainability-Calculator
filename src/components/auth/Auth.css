@@ -39,6 +39,26 @@ html, body {
   margin-bottom: 15px;
   object-fit: contain;
 }
+.auth-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligns items to the left */
+  gap: 10px; /* Adds spacing between logo and text */
+  margin-bottom: 10px;
+}
+
+.auth-logo {
+  height: 50px; /* Adjust size if needed */
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff; /* Matches Rackspace theme */
+  white-space: nowrap; /* Prevents text from wrapping */
+}
+
+
 
 /* Heading */
 h2 {

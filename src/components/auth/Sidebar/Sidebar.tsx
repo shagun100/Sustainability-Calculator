@@ -7,7 +7,7 @@ const Sidebar = () => {
         <h2>Dashboard</h2>
         <ul>
           <li><a href="/overview">Overview</a></li>
-          <li><a href="#">Devices</a></li>
+          <li><a href="/dashboard">Devices</a></li>
           <li><a href="/system-data"> System-data </a></li>
           <li><a href="#">Reports</a></li>
         </ul>

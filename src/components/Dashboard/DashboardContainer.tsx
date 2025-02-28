@@ -126,7 +126,7 @@ const DashboardContainer = () => {
         )}
 
         <button className="add-device-btn" onClick={() => setShowCustomerModal(true)}>
-          Get Customer Ids
+          Calculate Emission
         </button>
       </div>
 

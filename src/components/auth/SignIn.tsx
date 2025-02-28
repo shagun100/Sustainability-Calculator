@@ -21,35 +21,34 @@ const SignIn = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-box">
+  <div className="auth-container">
+    <div className="auth-box">
+      <div className="auth-header">
         <img src={OIP} alt="Rackspace Logo" className="auth-logo" />
-        <h2>Sign In</h2>
-        {error && <p className="error-message">{error}</p>}
-        <form onSubmit={handleSignIn}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Sign In</button>
-        </form>
-        {/* <div className="signup-link">
-          <p>Don't have an account?</p>
-          <Link to="/signup">Sign Up</Link>
-        </div>*/}
+        <h1 className="auth-title">RackTrack CO₂</h1>
       </div>
+      <h2>Sign In</h2>
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSignIn}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Sign In</button>
+      </form>
     </div>
-  );
-};
+  </div>
+);
+} 
 
 export default SignIn;

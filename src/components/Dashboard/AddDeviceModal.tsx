@@ -65,6 +65,8 @@ const AddDeviceModal: React.FC<AddDeviceModalProps> = ({
 
     try {
       // Make a POST request to your API to add the new device
+      console.log("Adding new device:", JSON.stringify(newDevice));
+      alert("Adding new device..."+JSON.stringify(newDevice));
       const response = await axios.post("/device", newDevice);
       if (response.status === 201) {
         // On success, update the parent state with the new device
