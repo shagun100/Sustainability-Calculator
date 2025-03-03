@@ -1,0 +1,34 @@
+.co2-cloud-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .co2-cloud {
+    background-color: rgba(200, 200, 200, 0.8);
+    border-radius: 50%;
+    text-align: center;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .co2-label {
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  
+  @keyframes cloud-float {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  

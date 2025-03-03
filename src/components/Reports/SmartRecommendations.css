@@ -1,0 +1,36 @@
+.smart-recommendations {
+    padding: 20px;
+    background: #1e1e1e;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .smart-recommendations h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #4caf50;
+  }
+  
+  .smart-recommendations ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .smart-recommendations li {
+    font-size: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+  }
+  
+  .smart-recommendations li:last-child {
+    border-bottom: none;
+  }
+  
+  .smart-recommendations p {
+    font-size: 16px;
+    color: #bbb;
+  }
+  

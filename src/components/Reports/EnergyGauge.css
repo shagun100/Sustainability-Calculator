@@ -1,0 +1,18 @@
+.gauge-container {
+    text-align: center;
+    background: #1a1d21;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+  
+  h3 {
+    color: #ff3b3b;
+  }
+  
+  p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  

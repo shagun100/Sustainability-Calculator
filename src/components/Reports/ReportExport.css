@@ -1,0 +1,45 @@
+.report-export {
+    padding: 20px;
+    background: #1e1e1e;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 400px;
+  }
+  
+  .report-export h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #ffcc00;
+  }
+  
+  .report-export button {
+    margin: 8px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .report-export button:first-child {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .report-export button:nth-child(2) {
+    background-color: #0073e6;
+    color: white;
+  }
+  
+  .report-export button:last-child {
+    background-color: #ff5722;
+    color: white;
+  }
+  
+  .report-export button:hover {
+    opacity: 0.8;
+  }
+  
