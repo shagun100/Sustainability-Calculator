@@ -1,12 +1,15 @@
 .navbar {
     background-color: black;
-    position: absolute;
-    width: 100%;
+    position: fixed;  /* Fix the navbar at the top */
+    top: 0;           /* Ensure it starts from the top */
+    left: 0;
+    width: 100%;      /* Make it span the full width */
     height: 5vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2vw;
+    padding: 1vw 2vw;
+    z-index: 1000;
     .logoImage {
         height: 3vw;
         width: 15vw;
