@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import "./ReportPage.css";
 import EnergyGauge from "./EnergyGauge";
 import Co2Cloud from "./Co2Cloud";
@@ -107,6 +107,138 @@ const ReportPage = () => {
           </div>
         </div>
       )}
+    </div>
+  );
+};
+
+export default ReportPage;*/
+import React, { useState } from "react";
+import "./ReportPage.css";
+
+interface Report {
+  customer: string;
+  fromDate: string;
+  toDate: string;
+}
+
+const ReportPage = () => {
+  // State for selected values
+  const [selectedCustomer, setSelectedCustomer] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [generatedReport, setGeneratedReport] = useState<Report | null>(null);
+
+  // Handle Generate Click
+  const handleGenerate = () => {
+    if (selectedCustomer && fromDate && toDate) {
+      setGeneratedReport({
+        customer: selectedCustomer,
+        fromDate,
+        toDate,
+      });
+    }
+  };
+
+  return (
+    <div className="report-container">
+      {/* Header Section */}
+      <div className="report-header">
+        <h2>Generate Reports</h2>
+      </div>
+
+      {/* Filters Section */}
+      <div className="report-filters">
+        {/* Customer Dropdown (Separate Line) */}
+        <div className="filter-group">
+          <label>Customer:</label>
+          <select
+            className="dropdown"
+            onChange={(e) => setSelectedCustomer(e.target.value)}
+          >
+            <option value="">Select Customer</option>
+            <option value="Customer A">Customer A</option>
+            <option value="Customer B">Customer B</option>
+          </select>
+        </div>
+
+        {/* From Date (Separate Line) */}
+        <div className="filter-group">
+          <label>From:</label>
+          <input
+            type="date"
+            className="date-picker"
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+        </div>
+
+        {/* To Date (Separate Line) */}
+        <div className="filter-group">
+          <label>To:</label>
+          <input
+            type="date"
+            className="date-picker"
+            onChange={(e) => setToDate(e.target.value)}
+          />
+        </div>
+
+        <button className="generate-btn" onClick={handleGenerate}>
+          Generate
+        </button>
+      </div>
+
+      {/* Display Selected Values */}
+      {generatedReport && (
+        <div className="generated-info">
+          <h3>Selected Report:</h3>
+          <p><strong>Customer:</strong> {generatedReport.customer}</p>
+          <p><strong>From:</strong> {generatedReport.fromDate}</p>
+          <p><strong>To:</strong> {generatedReport.toDate}</p>
+        </div>
+      )}
+
+      {/* Queued Reports Section (Table Format) */}
+      <div className="report-section">
+        <h3>Queued Reports</h3>
+        <table className="report-table">
+          <thead>
+            <tr>
+              <th>Report Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>708236-8Jan-21Jan</td>
+              <td className="status-new">New</td>
+            </tr>
+            <tr>
+              <td>708236-8Jan-21Jan</td>
+              <td className="status-running">Running</td>
+            </tr>
+          </tbody>            
+        </table>
+      </div>
+      <div className="report-section">
+              <h3>Old Reports</h3>
+              <table className="report-table">
+            <thead>
+            <tr>
+              <th>Report Name</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+          <tbody>
+            <tr>
+              <td>708236-1Jan-7Jan</td>
+              <td className="status-completed">Completed</td>
+            </tr>
+            <tr>
+              <td>708236-15Dec-31Dec</td>
+              <td className="status-completed">Completed</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
     </div>
   );
 };

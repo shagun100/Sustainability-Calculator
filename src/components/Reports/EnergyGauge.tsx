@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import "chart.js/auto";
 
@@ -34,4 +34,4 @@ const EnergyGauge: React.FC<EnergyGaugeProps> = ({ energyUsage }: EnergyGaugePro
   );
 };
 
-export default EnergyGauge;
+export default EnergyGauge;*/

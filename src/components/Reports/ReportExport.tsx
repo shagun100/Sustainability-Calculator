@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "./ReportExport.css";
@@ -38,4 +38,4 @@ const ReportExport: React.FC = () => {
   );
 };
 
-export default ReportExport;
+export default ReportExport;*/

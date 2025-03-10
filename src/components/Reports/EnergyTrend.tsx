@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -63,5 +63,5 @@ const EnergyTrend: React.FC<EnergyTrendProps> = ({ energyData }: EnergyTrendProp
     );
   };
   
-  export default EnergyTrend;
+  export default EnergyTrend;*/
   

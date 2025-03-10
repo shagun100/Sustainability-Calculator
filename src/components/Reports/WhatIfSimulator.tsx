@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import "./WhatIfSimulator.css";
 
 const WhatIfSimulator = () => {
@@ -39,4 +39,4 @@ const WhatIfSimulator = () => {
   );
 };
 
-export default WhatIfSimulator;
+export default WhatIfSimulator;*/

@@ -1,4 +1,4 @@
-import React from "react";
+/*import React from "react";
 import "./SmartRecommendations.css";
 
 interface SmartRecommendationsProps {
@@ -20,4 +20,4 @@ const SmartRecommendations: React.FC<SmartRecommendationsProps> = ({ recommendat
   );
 };
 
-export default SmartRecommendations;
+export default SmartRecommendations;*/

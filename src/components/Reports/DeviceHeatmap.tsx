@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+/*import React, { useState, useEffect } from "react";
 import "./DeviceHeatmap.css";
 
 interface Device {
@@ -48,4 +48,4 @@ const DeviceHeatmap: React.FC<HeatmapProps> = ({ devices }: HeatmapProps) => {
   );
 };
 
-export default DeviceHeatmap;
+export default DeviceHeatmap;*/

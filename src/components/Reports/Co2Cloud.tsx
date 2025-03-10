@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+/*import React, { useState, useEffect } from "react";
 import "./Co2Cloud.css";
 
 interface Co2CloudProps {
@@ -28,4 +28,4 @@ const Co2Cloud: React.FC<Co2CloudProps> = ({ emissions }: Co2CloudProps) => {
   );
 };
 
-export default Co2Cloud;
+export default Co2Cloud;*/

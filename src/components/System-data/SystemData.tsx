@@ -163,12 +163,18 @@ const SystemData = () => {
       {/* Data Table */}
       <div className="table-container">
         <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        <thead>
+  <tr>
+    <th>Name</th>
+    <th>
+      Actions
+      <button className="add-btn" onClick={() => openModal("add")}>
+        + Add {activeTab === "models" ? "Model" : activeTab === "types" ? "Type" : "Data Center"}
+      </button>
+    </th>
+  </tr>
+</thead>
+
           <tbody>
             {filteredData.map((item) => (
               <tr key={item.id}>
@@ -176,7 +182,6 @@ const SystemData = () => {
                 <td className="button-group">
                   <button className="edit-btn" onClick={() => openModal("edit", item)}>Edit</button>
                   <button className="delete-btn" onClick={() => handleDelete(item.id)}>Delete</button>
-                  <button className="add-btn" onClick={() => openModal("add")}>+ Add {activeTab === "models" ? "Model" : activeTab === "types" ? "Type" : "Data Center"}</button>
                 </td>
               </tr>
             ))}
